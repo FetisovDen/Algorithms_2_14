@@ -1,4 +1,4 @@
-package pro.sky.Algorithms_PartOne_2_14.Exception;
+package pro.sky.Algorithms_2_14.Exception;
 
 public class ItemNullException extends RuntimeException {
     public ItemNullException() {

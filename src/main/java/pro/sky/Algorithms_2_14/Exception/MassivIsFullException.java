@@ -1,4 +1,4 @@
-package pro.sky.Algorithms_PartOne_2_14.Exception;
+package pro.sky.Algorithms_2_14.Exception;
 
 public class MassivIsFullException extends RuntimeException {
     public MassivIsFullException() {
