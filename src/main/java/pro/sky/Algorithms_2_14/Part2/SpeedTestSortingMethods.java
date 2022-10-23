@@ -20,7 +20,7 @@ public class SpeedTestSortingMethods {
 
     public static Integer[] generateRandomArray() {
         java.util.Random random = new java.util.Random();
-        Integer[] arr = new Integer[100000];
+        Integer[] arr = new Integer[10000];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(10) + 1;
         }

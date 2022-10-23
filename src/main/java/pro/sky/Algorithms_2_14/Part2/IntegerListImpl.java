@@ -9,12 +9,13 @@ import java.util.Arrays;
 
 public class IntegerListImpl implements IntegerList {
 
-    private final Integer[] massive;
+    private Integer[] massive;
     private int size;
 
     public IntegerListImpl() {
         massive = new Integer[3];
     }
+
     public IntegerListImpl(int i) {
         massive = new Integer[i];
     }
@@ -25,9 +26,9 @@ public class IntegerListImpl implements IntegerList {
         }
     }
 
-    public void checkSizeOnFullness() {
+    public void checkIfNeedGrow() {
         if (size == massive.length) {
-            throw new MassivIsFullException();
+            grow();
         }
     }
 
@@ -39,7 +40,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public Integer add(Integer item) {
-        checkSizeOnFullness();
+        checkIfNeedGrow();
         checkItemOnNull(item);
         massive[size++] = item;
         return item;
@@ -47,7 +48,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public Integer add(int index, Integer item) {
-        checkSizeOnFullness();
+        checkIfNeedGrow();
         checkItemOnNull(item);
         checkIndex(index);
         if (index == size) {
@@ -94,7 +95,7 @@ public class IntegerListImpl implements IntegerList {
     }
 
     @Override
-    public boolean  contains(Integer[]arr,Integer item) {
+    public boolean contains(Integer[] arr, Integer item) {
         checkItemOnNull(item);
         sort(arr);
         int min = 0;
@@ -168,17 +169,42 @@ public class IntegerListImpl implements IntegerList {
     }
 
     @Override
-    public void sort(Integer[]arr){
-        for (int i = 0; i < arr.length - 1; i++) {
-            int minElementIndex = i;
-            for (int j = i + 1; j < arr.length; j++) {
-                if (arr[j] < arr[minElementIndex]) {
-                    minElementIndex = j;
-                }
-            }
-            Integer tmp = arr[i];
-            arr[i] = arr[minElementIndex];
-            arr[minElementIndex] = tmp;
+    public void sort(Integer[] arr) {
+        quickSort(arr, 0, arr.length - 1);
+    }
+
+    public void quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
         }
+    }
+
+    private int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                swapElements(arr, i, j);
+            }
+        }
+
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+
+    private void swapElements(Integer[] arr, int left, int right) {
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
+
+    private void grow() {
+        massive = Arrays.copyOf(massive, size + size / 2);
     }
 }
